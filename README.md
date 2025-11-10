@@ -1,1 +1,0 @@
-# CIS_Linux_hardening
