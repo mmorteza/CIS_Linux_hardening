@@ -1,0 +1,50 @@
+---
+input_rules:
+  # Block ipv6 traffice from looback
+  - ip6 saddr ::1 counter drop
+
+  # Allow traffic to the loopback interface
+  - iif "lo" accept
+  - ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop
+  - ip6 saddr ::1 counter packets 0 bytes 0 drop
+
+  # Allow established and related connections
+  - ip protocol tcp ct state established accept
+  - ip protocol udp ct state established accept
+
+  # Allow SSH connection
+  - tcp dport 22 accept
+
+  # Allow icmp/icmpv6 
+  - icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, mld-listener-query, mld-listener-report, mld-listener-done, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert, mld2-listener-report } accept
+  - icmp type { destination-unreachable, router-advertisement, router-solicitation, time-exceeded, parameter-problem } accept
+  - ip protocol icmp ct state established accept
+
+  # Allow igmp incomig
+  - ip protocol igmp accept
+
+  # Log and drop all other traffic
+  - log level info drop
+
+forward_rules:
+# Add your forward rules here
+
+output_rules:
+  # Allow established and related connections
+  - ip protocol tcp ct state established,related,new accept
+  - ip protocol udp ct state established,related,new accept
+  - ip protocol icmp ct state established,related,new accept
+
+  # Allow traffic to the loopback IP address
+  - oif "lo" accept
+
+  # DHCP client requests
+  - udp dport 67 counter log accept
+  - udp dport 68 counter log accept
+
+  # DNS query access
+  - udp dport 53 counter log accept
+
+  # Log and drop all other traffic
+  - log level info drop
+

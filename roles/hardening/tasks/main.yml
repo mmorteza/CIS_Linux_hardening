@@ -1,0 +1,19 @@
+- name: Gather the package facts
+  package_facts:
+    manager: auto
+
+- name: Include tasks for common configuration
+  include_tasks: "{{ item }}"
+  loop:
+    - packages.yml
+    # - kernel
+    - system-wide.yml
+    - ntp.yml
+    - ssh.yml
+    - permission_checks.yml
+    - systemd.yml
+    - rsyslog.yml
+    - mounts.yml
+    - grub.yml
+    - pam.yml
+    - sysctl.yml

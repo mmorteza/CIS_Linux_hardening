@@ -1,0 +1,31 @@
+# Managed by Ansible
+# PAM password quality configuration
+
+# CIS_L2: Settin ucredit to -1
+ucredit = {{ password_ucredit }}
+
+# CIS_L2: Settin lcredit to -1
+lcredit = {{ password_lower_case }}
+
+# CIS_L2: Settin dcredit to -1
+dcredit = {{ password_dcredit }}
+
+# CIS_L2: Settin ocredit to -1
+ocredit = {{ password_ocredit }}
+
+# CIS_L2: Settin minimum password class to 4
+minclass = {{ password_minclass }}
+
+# CIS_L2: Settin minimum password lenght to 14
+minlen = {{ password_minlen | default(12) }}
+
+# CIS_L2: Settin maximum number of repeat to 3
+maxrepeat = {{ password_maxrepeat }}
+
+# CIS_L2: Settin the number of sequential to 3
+maxsequence = {{ password_maxsequence }}
+
+# CIS_L2: enforcing password policy to root as well
+enforce_for_root
+
+difok = {{ password_difok }}

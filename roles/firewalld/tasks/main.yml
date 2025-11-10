@@ -1,0 +1,31 @@
+---
+- name: Ensure firewalld is installed
+  ansible.builtin.package:
+    name: firewalld
+    state: present
+
+- name: Enable and start firewalld
+  ansible.builtin.service:
+    name: firewalld
+    enabled: true
+    state: started
+
+- name: Set zone target to DROP
+  ansible.posix.firewalld:
+    zone: "{{ firewalld_zone }}"
+    target: DROP
+    permanent: true
+    immediate: true
+
+- name: Apply INPUT rules
+  include_tasks: input.yml
+
+- name: Apply FORWARD rules
+  include_tasks: forward.yml
+
+- name: Apply OUTPUT rules
+  include_tasks: output.yml
+
+- name: Apply NAT configuration
+  when: enable_nat | default(false)
+  include_tasks: nat.yml

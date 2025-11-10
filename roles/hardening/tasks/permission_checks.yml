@@ -1,0 +1,220 @@
+- name: Check for existence /etc/cron.allow
+  stat:
+    path: /etc/cron.allow
+  register: file_exists
+
+- name: Ensure permission u-xs,g-xws,o-xwrt on /etc/cron.allow
+  file:
+    path: /etc/cron.allow
+    mode: u-xs,g-xws,o-xwrt
+  when:
+    - file_exists.stat is defined and file_exists.stat.exists
+
+- name: check file /etc/at.allow is exist if not create item
+  file:
+    path: /etc/at.allow
+    state: touch
+    owner: root
+    group: root
+    mode: '0640'
+  register: file_exists
+
+- name: Ensure permission u-xs,g-xws,o-xwrt on /etc/at.allow
+  file:
+    path: /etc/at.allow
+    mode: u-xs,g-xws,o-xwrt
+  when:
+    - file_exists.stat is defined and file_exists.stat.exists
+
+- name: Check for existence /etc/crontab
+  stat:
+    path: /etc/crontab
+  register: file_exists
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+    
+- name: Ensure permission u-xs,g-xwrs,o-xwrt on /etc/crontab
+  file:
+    path: /etc/crontab
+    mode: u-xs,g-xwrs,o-xwrt
+  when:
+  - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: Ensure permission og-rwx on  root owned the /etc/cron.hourly
+  file:
+    path: /etc/cron.hourly
+    mode: og-rwx
+    owner: root
+    group: root
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: Ensure permission og-rwx on  root owned the /etc/cron.daily
+  file:
+    path: /etc/cron.daily
+    mode: og-rwx
+    owner: root
+    group: root
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: Ensure permission og-rwx on  root owned the /etc/cron.weekly
+  file:
+    path: /etc/cron.weekly
+    mode: og-rwx
+    owner: root
+    group: root
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: Ensure permission og-rwx on  root owned the /etc/cron.monthly
+  file:
+    path: /etc/cron.monthly
+    mode: og-rwx
+    owner: root
+    group: root
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: Ensure permission og-rwx on root owned the /etc/cron.d
+  file:
+    path: /etc/cron.d
+    mode: og-rwx
+    owner: root
+    group: root
+  tags:
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+
+- name: check for existence /etc/shadow
+  stat:
+    path: /etc/shadow
+  register: file_exists
+  tags:
+    - CJIS-5.5.2.2
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+    - PCI-DSS-Req-8.7.ctags
+    
+- name: Ensure permission u-xwrs,g-xwrs,o-xwrt on /etc/shadow
+  file:
+    path: /etc/shadow
+    mode: u-xwrs,g-xwrs,o-xwrt
+  when: file_exists.stat is defined and file_exists.stat.exists
+  tags:
+    - CJIS-5.5.2.2
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+    - PCI-DSS-Req-8.7.c
+
+- name: Check for existence /etc/group-
+  stat:
+    path: /etc/group-
+  register: file_exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/group-
+  file:
+    path: /etc/group-
+    mode: u-xs,g-xws,o-xwt
+  when: file_exists.st is defined and file_exists.stat.exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+    
+- name: Check for existence /etc/gshadow-
+  stat:
+    path: /etc/gshadow-
+  register: file_exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+    
+- name: Ensure permission u-xwrs,g-xwrs,o-xwrt on /etc/gshadow-
+  file:
+    path: /etc/gshadow-
+    mode: u-xwrs,g-xwrs,o-xwrt
+  when: file_exists.stat is defined and file_exists.stat.exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+    
+- name: Check for existence /etc/passwd-
+  stat:
+    path: /etc/passwd-
+  register: file_exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+    - configure_strategy
+    
+- name: Ensure permission u-xs,g-xws,o-xwt on /etc/passwd-
+  file:
+    path: /etc/passwd-
+    mode: u-xs,g-xws,o-xwt
+  when: file_exists.stat is defined and file_exists.stat.exists
+  tags:
+    - NIST-800-53-AC-6 (1)
+
+- name: check for existence /boot/grub/grub.cfg
+  stat:
+    path: /boot/grub/grub.cfg
+  register: file_exists
+  when:
+    - '"grub2-common" in ansible_facts.packages'
+    - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - NIST-800-171-3.4.5
+    - NIST-800-53-AC-6(1)
+    - NIST-800-53-CM-6(a)
+    
+- name: Ensure permission u-xs,g-xwrs,o-xwrt on /boot/grub/grub.cfg
+  file:
+    path: /boot/grub/grub.cfg
+    mode: u-xs,g-xwrs,o-xwrt
+  when:
+    - '"grub2-common" in ansible_facts.packages'
+    - '"/boot/efi" not in ansible_mounts | map(attribute="mount") | list'
+    - ansible_virtualization_type not in ["docker", "lxc", "openvz", "podman", "container"]
+    - file_exists.stat is defined and file_exists.stat.exists
+  tags:
+  - NIST-800-171-3.4.5
+  - NIST-800-53-AC-6(1)
+  - NIST-800-53-CM-6(a)
+
+- name: Ensure interactive local users are the owners of their respective initializationfiles
+  ansible.builtin.shell:
+    cmd: |-
+      for dir in $(awk -F':' '{ if ($3 >= 1000 && $3 != 65534) print $6}' /etc/passwd); do
+        for file in $(find $dir -maxdepth 1 -type f -name ".*"); do
+          if [ "$(basename $file)" != ".bash_history" ]; then
+            sed -i 's/^\([\s]*umask\s*\)/#\1/g' $file
+          fi
+        done
+      done
+  args:
+    executable: /bin/bash
+
+- name: check grub-mkconfig permission on Debiab Dist to readonly
+  file:
+    path: /usr/sbin/grub-mkconfig
+    mode: 0400
+    owner: root
+    group: root
+  when:
+    - ansible_facts.os_family == "Debian"
+
+- name: check grub-mkconfig permission on RHEL Dist to readonly
+  file:
+    path: /usr/sbin/grub2-mkconfig
+    mode: 0400
+    owner: root
+    group: root
+  when:
+    - ansible_facts.os_family == "rhel centos fedora"

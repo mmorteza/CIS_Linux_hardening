@@ -1,0 +1,30 @@
+- name: Ensure rsyslog is installed
+  apt:
+    name: rsyslog
+    state: present
+  when:
+    - ansible_facts.os_family == "Debian"
+
+- name: Ensure rsyslog is installed
+  dnf:
+    name: rsyslog
+    state: present
+  when:
+    - ansible_facts.os_family == "rhel centos fedora"
+
+- name: Deploy rsyslog config files
+  template:
+    src: rsyslog_config.j2
+    dest: /etc/rsyslog.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Deploy rsyslog rules in rsyslog.d file
+  template:
+    src: rsyslog_rules.j2
+    dest: /etc/rsyslog.d/50-default.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart RSYSLOG

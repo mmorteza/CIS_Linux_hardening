@@ -1,0 +1,9 @@
+# Managed by Ansible
+# CIS Benchmark: Hardening for {{ item.name }}
+
+{% if item.disable | default(false) %}
+install {{ item.name }} /bin/false
+{% endif %}
+{% if item.blacklist | default(false) %}
+blacklist {{item.name }}
+{% endif %}

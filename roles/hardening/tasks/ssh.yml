@@ -1,0 +1,24 @@
+- name: Remove Cloud init ssh config file
+  file:
+    path: /etc/ssh/sshd_config.d/50-cloud-init.conf
+    state: absent
+  ignore_errors: true
+
+- name: Configure SSH
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    mode: '0600'
+    owner: root
+    group: root
+  notify: Restart SSH
+
+- name: Disable System wide Crypto policy
+  copy:
+    src: files/NO-SSHCHACHA20.pmod
+    dest: /etc/crypto-policies/policies/modules/NO-SSHCHACHA20.pmod
+    mode: '0640'
+    owner: root
+    group: root
+  when:
+    - ansible_facts.os_family == "rhel centos fedora"

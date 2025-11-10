@@ -1,0 +1,29 @@
+---
+# handlers file for common rules
+- name: Restart timesyncd
+  service:
+    name: systemd-timesyncd
+    state: restarted
+
+- name: Restart chronyd
+  service:
+    name: chronyd
+    state: restarted
+
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+
+- name: Restart nft
+  service:
+    name: nftables
+    state: restarted
+
+- name: update-grub
+  shell: sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: Restart RSYSLOG
+  service:
+    name: rsyslog
+    state: restarted

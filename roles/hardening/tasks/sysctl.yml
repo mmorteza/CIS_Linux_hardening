@@ -1,0 +1,20 @@
+- name: Set Kernel Parameters
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+    state: present
+    reload: true
+  with_items: "{{ kernel_params }}"
+  ignore_errors: true
+
+- name: Set RHEL base specific Kernel Parameters
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: true
+    state: present
+    reload: true
+  with_items: "{{ rhel_ker_params }}"
+  when:
+    - ansible_facts.os_family == "rhel centos fedora"

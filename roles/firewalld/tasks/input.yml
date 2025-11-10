@@ -1,0 +1,10 @@
+---
+- name: Configure INPUT rich rules
+  ansible.posix.firewalld:
+    zone: "{{ firewalld_zone }}"
+    permanent: true
+    immediate: true
+    state: enabled
+    rich_rule: "{{ item }}"
+  loop: "{{ lookup('template', 'firewalld_input.rules.j2').splitlines() }}"
+  when: input_rules is defined and input_rules | length > 0

@@ -1,0 +1,63 @@
+# file is managed by ansible
+#  Default rules for rsyslog.
+#
+#  For more information see rsyslog.conf(5) and /etc/rsyslog.conf
+
+#
+# First some standard log files.  Log by facility.
+#
+auth,authpriv.*			-{{ auth_authpriv }}
+#*.*;auth,authpriv.none		-/var/log/syslog
+#cron.*				/var/log/cron.log
+#daemon.*			-/var/log/daemon.log
+kern.*				-{{ rsyslog_kernel }}
+#lpr.*				-/var/log/lpr.log
+mail.*				-{{ rsyslog_main }}
+#user.*				-/var/log/user.log
+*.=warning;*.=err		-{{ all_warn_error }}
+*.crit				-{{ all_critical }}
+#
+# Logging for the mail system.  Split it up so that
+# it is easy to write scripts to parse these files.
+#
+mail.info			-{{ mail_info}}
+mail.warn			-{{ mail_warning }}
+mail.err			-{{ mail_error }}
+
+news.crit			-{{ news_crit }}
+news.err			-{{ news_err }}
+news.notice			-{{ news_notice }}
+
+*.*;mail.none;news.none		{{ mail_news_none }}
+#
+# Some "catch-all" log files.
+#
+#*.=debug;\
+#	auth,authpriv.none;\
+#	news.none;mail.none	-/var/log/debug
+#*.=info;*.=notice;*.=warn;\
+#	auth,authpriv.none;\
+#	cron,daemon.none;\
+#	mail,news.none		-/var/log/messages
+
+#
+# Emergencies are sent to everybody logged in.
+#
+*.emerg				{{ all_emergency }}
+
+#
+# I like to have messages displayed on the console, but only on a virtual
+# console I usually leave idle.
+#
+#daemon,mail.*;\
+#	news.=crit;news.=err;news.=notice;\
+#	*.=debug;*.=info;\
+#	*.=notice;*.=warn	/dev/tty8
+
+local0,local1.*			{{ local0_local1 }}
+
+local2,local3.*			{{ local2_local3 }}
+
+local4,local5.*			{{ local4_local5 }}
+
+local6,local7.*			{{ local6_local7 }}

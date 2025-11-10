@@ -1,0 +1,11 @@
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_CMDLINE_LINUX="crashkernel=1G-4G:192M,4G-64G:256M,64G-:512M resume=UUID=1bea2917-a89f-4aed-89d2-3834255ac822"
+GRUB_CMDLINE_LINUX="{{ rhel_grub_cmdline1 }}"
+GRUB_CMDLINE_LINUX="{{ rhel_grub_cmdline2 }}"
+GRUB_CMDLINE_LINUX="{{ rhel_grub_cmdline3 }}"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_ENABLE_BLSCFG=true

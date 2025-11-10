@@ -1,0 +1,4 @@
+- name: Restart nft
+  service:
+    name: nftables
+    state: restarted

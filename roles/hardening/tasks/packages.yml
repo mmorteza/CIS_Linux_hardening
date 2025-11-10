@@ -1,0 +1,75 @@
+- name: Gather package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Update cache on Debian Base Dist
+  apt:
+    update_cache: true
+  ignore_errors: true
+  when: 
+    - ansible_facts.os_family == "Debian"
+
+- name: Update cache on RHEL Base Dist
+  apt:
+    update_cache: true
+  ignore_errors: true
+  when: 
+    - ansible_facts.os_family == "rhel centos fedora"
+
+- name: Install common packages if they are not installed on Debian base Dist
+  apt:
+    name: "{{ item }}"
+    state: present
+#    update_cache: yes
+  loop: "{{ common_packages }}"
+  when: 
+    - "'{{ item }}' not in ansible_facts.packages"
+    - ansible_facts.os_family == "Debian"
+
+- name: Install common packages if they are not installed on RHEL base Dist
+  dnf:
+    name: "{{ item }}"
+    state: present
+#    update_cache: yes
+  loop: "{{ common_packages }}"
+  when:
+    - "'{{ item }}' not in ansible_facts.packages"
+    - ansible_facts.os_family == "rhel centos fedora"
+
+- name: Purge not used or uncommon packages Debian Dist
+  apt:
+    name: "{{ item }}"
+    state: absent
+#    update_cache: yes
+  loop: "{{ removed_packages }}"
+  when: 
+    - "'{{ item }}' in ansible_facts.packages"
+    - ansible_facts.os_family == "Debian"
+  tags:
+    - NIST-800-53-CM-6(a)
+    - NIST-800-53-CM-7
+    - NIST-800-53-CM-7(a)
+    - NIST-800-53-CM-7(b)
+    - NIST-800-53-CM-7.1(ii)
+    - NIST-800-53-IA-5(1)(c)
+    - NIST-800-53-IA-5(1).1(v)
+    - PCI-DSS-Req-2.2.4
+
+- name: Purge not used or uncommon packages on RHEL Dist
+  dnf:
+    name: "{{ item }}"
+    state: absent
+#    update_cache: yes
+  loop: "{{ removed_packages }}"
+  when: 
+    - "'{{ item }}' in ansible_facts.packages"
+    - ansible_facts.os_family == "rhel centos fedora"
+  tags:
+    - NIST-800-53-CM-6(a)
+    - NIST-800-53-CM-7
+    - NIST-800-53-CM-7(a)
+    - NIST-800-53-CM-7(b)
+    - NIST-800-53-CM-7.1(ii)
+    - NIST-800-53-IA-5(1)(c)
+    - NIST-800-53-IA-5(1).1(v)
+    - PCI-DSS-Req-2.2.4

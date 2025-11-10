@@ -1,0 +1,15 @@
+enable_nat: true
+firewalld_zone: public
+
+input_rules:
+  - iif "lo" accept
+  - ip saddr 127.0.0.0/8 drop
+  - tcp dport 22 accept
+  - icmp type { destination-unreachable, time-exceeded } accept
+  - log level info drop
+
+forward_rules: []
+
+output_rules:
+  - udp dport 53 accept
+  - log level info drop

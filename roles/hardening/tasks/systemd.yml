@@ -1,0 +1,14 @@
+- name: Gather service status
+  ansible.builtin.service_facts:
+
+- name: masked some systemd sockets
+  systemd:
+    name: '{{ item }}'
+    enabled: 'no'
+    state: stopped
+    masked: 'yes'
+  with_items: '{{ systemd_disabled_sockets }}'
+  when: '"{{ item }}" in ansible_fatcs_services'
+  ignore_errors: true
+  tags:
+  - NIST-800-53-CM-6(a)

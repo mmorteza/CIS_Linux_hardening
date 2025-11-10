@@ -1,0 +1,70 @@
+- name: Check if /tmp partition exists in /etc/fstab
+  shell:
+    cmd: grep -E '\s/tmp\s' /etc/fstab
+  register: fstab_tmp
+  changed_when: false
+  failed_when: fstab_tmp.rc != 0
+
+- name: Check if /tmp partition has nodev, nosuid, and noexec options
+  shell:
+    cmd: cat /etc/fstab | grep "/tmp" | grep -E "nodev|noexec|nosuid"
+  register: tmp_option_check
+  changed_when: false
+
+- name: Backup the /etc/fstab file
+  copy:
+    src: /etc/fstab
+    dest: /etc/fstab.bak
+#when: tmp_option_check.rc == 1 or home_option_check.rc == 1
+
+- name: Add nodev, nosuid, and noexec options to /tmp partition in /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(\S+\s+/tmp\s+\S+\s+)(\S*)'
+    replace: '\1\2,nodev,nosuid,noexec'
+  when: tmp_option_check.rc == 1
+
+- name: Remount /tmp partition with new options
+  shell:
+    cmd: mount -o remount /tmp
+  when: tmp_option_check.rc == 1
+
+- name: Verify /tmp is mounted with nodev, nosuid, and noexec options
+  shell: 
+    cmd: mount | grep 'on /tmp' | grep -E 'nodev|nosuid|noexec'
+  register: tmp_mount_check
+  failed_when: tmp_mount_check.rc == 1
+  changed_when: false
+
+- name: Check if /home partition exists in /etc/fstab
+  shell: 
+    cmd: grep -E '\s/home\s' /etc/fstab
+  register: fstab_home
+  changed_when: false
+  failed_when: fstab_home.rc != 0
+
+- name: Check if /home partition has nodev option
+  shell: 
+    cmd: grep -E '\s/home\s.*nodev' /etc/fstab
+  register: home_option_check
+  changed_when: false
+  failed_when: false
+
+- name: Add nodev option to /home partition in /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(\S+\s+/home\s+\S+\s+)(\S*)'
+    replace: '\1\2,nodev'
+  when: home_option_check.rc == 1
+
+- name: Remount /home partition with new options
+  shell:
+    cmd: mount -o remount /home
+  when: home_option_check.rc == 1
+
+- name: Verify /home is mounted with nodev option
+  shell:
+    cmd: mount | grep 'on /home' | grep -E 'nodev'
+  register: home_mount_check
+  failed_when: home_mount_check.rc == 1
+  changed_when: false

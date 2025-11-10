@@ -1,0 +1,21 @@
+- name: enable audit and apparmor on grub and disable ipv6 at all on Debian Dist
+  template:
+    src: debian.grub.j2
+    dest: /etc/default/grub
+    mode: '0640'
+    owner: root
+    group: root
+  notify: update-grub
+  when:
+    - ansible_facts.os_family == "Debian"
+
+- name: enable audit and apparmor on grub and disable ipv6 at all on RHEL Dist
+  copy:
+    src: rhel.grub.j2
+    dest: /etc/default/grub
+    mode: '0644'
+    owner: root
+    group: root
+  notify: update-grub
+  when:
+    - ansible_facts.os_family == "rhel centos fedora"

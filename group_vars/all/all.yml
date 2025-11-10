@@ -1,0 +1,72 @@
+disabled_modules:
+  - name: "cramfs"
+    disable: true
+    blacklist: true
+  - name: "freevxfs"
+    disable: true
+    blacklist: true
+  - name: "jffs2"
+    disable: true
+    blacklist: true
+  - name: "hfs"
+    disable: true
+    blacklist: true
+  - name: "hfsplus"
+    disable: true
+    blacklist: true
+  - name: "firewire_ohci"
+    blacklist: true
+  - name: "dccp"
+    disable: true
+    blacklist: true
+  - name: "squashfs"
+    disable: true
+    blacklist: true
+  - name: "tipc"
+    disable: true
+    blacklist: true
+  - name: "sctp"
+    disable: true
+    blacklist: true
+  - name: "rds"
+    disable: true
+    blacklist: true
+  - name: "udf"
+    disable: true
+    blacklist: true
+  - name: overlayfs
+    disable: true
+    blacklist: true
+  - name: usb-storage
+    disable: true
+    blacklist: true
+
+ntp_primary_server: "0.ubuntu.pool.ntp.org"
+ntp_secondary_server: "1.ubuntu.pool.ntp.org"
+FallbackNTP: "ntp.ubuntu.org"
+
+# grub related vars
+grub_cmdline1: "audit=1 audit_backlog_limit=8192"
+grub_cmdline2: "apparmor=1 security=apparmor"
+grub_cmdline3: "ipv6.disable=1"
+
+# password quality conf
+pam_password_deny: 5
+pam_fail_interval: 900
+pam_unlock_time: 900
+pam_root_lockout: 60
+
+################# /etc/login.defs related vars ##########
+pass_maxdays: 365
+pass_mindays: 1
+pass_warn_age: 7
+
+################# /etc/systemd/journal.conf related vars ##########
+journal_maxuse: '1G'
+journal_sys_keep_free: '500M'
+journal_runtimeMax: '200M'
+journal_keepfree: '50M'
+
+#postfix mail agent related vars
+postfix_interface: 'loopback-only'
+postfix_inet: 'inet'

@@ -1,0 +1,10 @@
+---
+- name: Configure OUTPUT rich rules
+  ansible.posix.firewalld:
+    zone: "{{ firewalld_zone }}"
+    permanent: true
+    immediate: true
+    state: enabled
+    rich_rule: "{{ item }}"
+  loop: "{{ lookup('template', 'firewalld_output.rules.j2').splitlines() }}"
+  when: output_rules is defined and output_rules | length > 0

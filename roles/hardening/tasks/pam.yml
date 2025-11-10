@@ -1,0 +1,92 @@
+- name: Enable pam_faillock.so module maintains a list of failed authentication attempts
+  copy:
+    src: files/pam/faillock
+    dest: /usr/share/pam-configs/faillock
+    mode: '0644'
+    owner: root
+    group: root
+  register: faillock_file
+  tags:
+    - CIS_Benchmark
+
+- name: Run pam-auth-update command to update faillock profile
+  shell:
+    cmd: pam-auth-update --enable faillock
+  when: faillock_file is changed
+
+- name: Enable pam_faillock.so notify module maintains a list of failed authentication attempts
+  copy:
+    src: files/pam/faillock_notify
+    dest: /usr/share/pam-configs/faillock_notify
+    mode: '0644'
+    owner: root
+    group: root
+  register: faillock_notify
+  tags:
+    - CIS_Benchmark
+
+- name: Run pam-auth-update command to update faillock notify
+  shell:
+    cmd: pam-auth-update --enable faillock_notify
+  when: faillock_notify is changed
+
+- name: Enable pwquality.so module for Password quality checking
+  copy:
+    src: files/pam/pwquality
+    dest: /usr/share/pam-configs/pwquality
+    mode: '0644'
+    owner: root
+    group: root
+  register: pwquality_file
+  tags:
+    - CIS_Benchmark
+
+- name: Run pam-auth-update command to update faillock notify
+  shell:
+    cmd: pam-auth-update --enable pwquality
+  when: pwquality_file is changed
+
+- name: Enable pwhistory.so module for Password history checking
+  copy:
+    src: files/pam/pwhistory
+    dest: /usr/share/pam-configs/pwhistory
+    mode: '0644'
+    owner: root
+    group: root
+  register: pwhistory_file
+  tags:
+    - CIS_Benchmark
+
+- name: Run pam-auth-update command to update pwhistory notify
+  shell:
+    cmd: pam-auth-update pwhistory
+  when: pwhistory_file is changed
+
+- name: Apply PAM password quality configuration
+  ansible.builtin.template:
+    src: pwquality.conf.j2
+    dest: /etc/security/pwquality.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  when: '"libpam-runtime" in ansible_facts.packages'
+
+- name: Configure faillock.conf on /etc/security/
+  template:
+    src: faillock.conf.j2
+    dest: /etc/security/faillock.conf
+    mode: '0640'
+    group: root
+    owner: root
+    backup: true
+  when: '"libpam-runtime" in ansible_facts.packages'
+
+- name: securing /etc/login.defs to protect users
+  template:
+    src: login.defs.j2
+    dest: /etc/login.defs
+    owner: root
+    group: root
+    mode: '0640'
+    backup: true

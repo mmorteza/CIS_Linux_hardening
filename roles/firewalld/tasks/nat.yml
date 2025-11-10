@@ -1,0 +1,7 @@
+---
+- name: Enable NAT masquerading
+  ansible.posix.firewalld:
+    zone: "{{ firewalld_zone }}"
+    masquerade: yes
+    permanent: true
+    immediate: true

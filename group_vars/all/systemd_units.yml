@@ -1,0 +1,7 @@
+systemd_disabled_sockets:
+  - cups.socket
+  - avahi-daemon.socket
+  - autofs.socket
+
+enabled_Services:
+  - cron

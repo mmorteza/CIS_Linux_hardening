@@ -1,0 +1,10 @@
+reapeatedMsg: "on"
+File_Owner: "syslog"
+File_Group: "adm"
+File_Perm: '0640'
+Dir_Perm: '0755'
+umask: '0022'
+Priv_to_user: "syslog"
+priv_to_group: "syslog"
+work_dir: "/var/spool/rsyslog"
+include_config: "/etc/rsyslog.d/*.conf"

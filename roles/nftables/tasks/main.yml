@@ -1,0 +1,35 @@
+- name: Ensure nftables is installed
+  package:
+    name: nftables
+    state: present
+  register: nft_installed
+
+- name: check if /etc/nft/nftables.d is exists nor create it
+  file:
+    path: /etc/nft/nftables.d/
+    state: directory
+    owner: root
+    group: root
+
+- name: Deploy nftables config files
+  template:
+    src: nft.conf.j2
+    dest: /etc/nftables.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Deploy nftable rules
+  template:
+    src: nft.rule.conf.j2
+    dest: /etc/nft/nftables.d/50-hardening-basic.rules
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart nft 
+
+- name: Ensure nftables service is enabled and running
+  service:
+    name: nftables
+    enabled: yes
+    state: started

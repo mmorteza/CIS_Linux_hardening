@@ -1,0 +1,33 @@
+common_packages:
+  - aide
+  - nftables
+  - rsyslog
+  - auditd
+  - audispd-plugins
+  - libpam-pwquality
+  - acl
+
+removed_packages:
+  - xorg-x11-server-common
+  - ntp
+  - net-snmp
+  - samba
+  - squid
+  - telnet
+  - talk
+  - rsh
+  - xinetd
+  - chrony
+  - openldap-servers
+  - dovecot
+  - httpd
+  - apache2
+  - vsftpd
+  - bind
+  - nis
+  - gdm
+  - inetutils-telnet
+  - ftp
+  - tnftp
+  - ufw
+

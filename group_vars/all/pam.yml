@@ -1,0 +1,10 @@
+################# pwquality.conf related vars ##########
+password_minlen: "14"
+password_dcredit: "-1"
+password_ocredit: "-1"
+password_lower_case: "-1"
+password_minclass: "3"
+password_ucredit: "-1"
+password_difok: "2"
+password_maxrepeat: "3"
+password_maxsequence: "3"

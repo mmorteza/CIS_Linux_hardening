@@ -1,0 +1,66 @@
+# Managed By ansible
+# This is a temporary situation: setting these variables will soon
+# move to /etc/default/useradd and the variables will then be
+# no more supported
+MAIL_DIR        /var/mail
+
+# Enable logging and display of /var/log/faillog login failure info.
+# This option conflicts with the pam_tally PAM module.
+FAILLOG_ENAB            yes
+LOG_UNKFAIL_ENAB        yes
+LOG_OK_LOGINS           yes
+
+# Enable "syslog" logging of su activity - in addition to sulog file logging.
+# SYSLOG_SG_ENAB does the same for newgrp and sg.
+#
+SYSLOG_SU_ENAB          yes
+SYSLOG_SG_ENAB          yes
+SULOG_FILE     /var/log/sulog
+
+# If defined, login failures will be logged here in a utmp format
+# last, when invoked as lastb, will read /var/log/btmp, so...
+#
+FTMP_FILE       /var/log/btmp
+
+SU_NAME         su
+
+HUSHLOGIN_FILE  .hushlogin
+
+# *REQUIRED*  The default PATH settings, for superuser and normal users.
+# (they are minimal, add the rest in the shell startup files)
+
+ENV_SUPATH      PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin:/usr/bin:/snap/bin
+ENV_PATH        PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin:/usr/bin:/snap/bin
+
+# Login configuration initializations:
+
+ERASECHAR       0177
+KILLCHAR        025
+UMASK 027
+UID_MIN         1000
+UID_MAX         20000
+
+PASS_MAX_DAYS     365
+PASS_MIN_DAYS     1
+PASS_WARN_AGE   7
+
+# Users can still allow other people to write them by issuing
+# the "mesg y" command.
+
+TTYGROUP        tty
+TTYPERM         0600
+
+# Min/max values for automatic gid selection in groupadd
+#
+GID_MIN                  1000
+GID_MAX                 60000
+
+# Define Login Parameters 
+# i.e max nimber on failed login
+LOGIN_RETRIES           5
+LOGIN_TIMEOUT           60
+CHFN_RESTRICT           rwh
+DEFAULT_HOME    yes
+USERGROUPS_ENAB yes
+ENCRYPT_METHOD SHA512
+HOME_MODE       0750

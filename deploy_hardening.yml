@@ -1,0 +1,10 @@
+- name: Configure common configuration
+  hosts: all
+  gather_facts: true
+  become: true
+
+  roles:
+    - role: nftables
+      tags: ['nft']
+    - role: hardening
+      tags: ['cis', 'security']
