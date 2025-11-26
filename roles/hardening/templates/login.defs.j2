@@ -36,13 +36,13 @@ ENV_PATH        PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin
 
 ERASECHAR       0177
 KILLCHAR        025
-UMASK 027
+UMASK           027
 UID_MIN         1000
 UID_MAX         20000
 
 PASS_MAX_DAYS     365
 PASS_MIN_DAYS     1
-PASS_WARN_AGE   7
+PASS_WARN_AGE     7
 
 # Users can still allow other people to write them by issuing
 # the "mesg y" command.
@@ -62,5 +62,5 @@ LOGIN_TIMEOUT           60
 CHFN_RESTRICT           rwh
 DEFAULT_HOME    yes
 USERGROUPS_ENAB yes
-ENCRYPT_METHOD SHA512
+ENCRYPT_METHOD YESCRYPT
 HOME_MODE       0750

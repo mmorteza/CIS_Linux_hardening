@@ -6,6 +6,7 @@ common_packages:
   - audispd-plugins
   - libpam-pwquality
   - acl
+  - libpam-runtime
 
 removed_packages:
   - xorg-x11-server-common
