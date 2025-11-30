@@ -10,12 +10,32 @@
     - ansible_facts.os_family == "Debian"
 
 - name: enable audit and apparmor on grub and disable ipv6 at all on RHEL Dist
-  copy:
+  template:
     src: rhel.grub.j2
     dest: /etc/default/grub
     mode: '0644'
     owner: root
     group: root
-  notify: update-grub
+  notify: rhel-update-grub2
   when:
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
+
+- name: Set correct permission on /boot/grub2/grub.cfg
+  shell: |
+    chown root:root /boot/grub2/grub.cfg && chmod u-x,go-rwx /boot/grub2/grub.cfg
+  when:
+    - ansible_facts.os_family == "RedHat"
+
+- name: Set correct permission on /boot/grub2/grubenv
+  shell: |
+    chown root:root /boot/grub2/grubenv && chmod u-x,go-rwx /boot/grub2/grubenv
+  when:
+    - ansible_facts.os_family == "RedHat"
+  ignore_errors: true
+
+- name: Set correct permission on /boot/grub2/user.cfg
+  shell: |
+    chown root:root /boot/grub2/user.cfg && chmod u-x,go-rwx /boot/grub2/user.cfg
+  when:
+    - ansible_facts.os_family == "RedHat"
+  ignore_errors: true

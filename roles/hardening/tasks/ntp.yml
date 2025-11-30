@@ -19,7 +19,7 @@
     group: root
   notify: Restart chronyd
   when:
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
 
 - name: Deploy NTP configuration for both client and server
   template:

@@ -17,4 +17,4 @@
     reload: true
   with_items: "{{ rhel_ker_params }}"
   when:
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"

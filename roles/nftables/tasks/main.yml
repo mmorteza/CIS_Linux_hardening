@@ -19,7 +19,7 @@
     owner: root
     group: root
 
-- name: Deploy nftable rules
+- name: Deploy nftable rules For Debian
   template:
     src: nft.rule.conf.j2
     dest: /etc/nft/nftables.d/50-hardening-basic.rules
@@ -27,6 +27,19 @@
     owner: root
     group: root
   notify: Restart nft 
+  when:
+    - ansible_facts.os_family == "Debian"
+
+- name: Deploy nftable rules For RHEL
+  template:
+    src: nft.rule.conf.j2
+    dest: /etc/nftables/50-hardening-basic.nft
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart nft 
+  when:
+    - ansible_facts.os_family == "RedHat"
 
 - name: Ensure nftables service is enabled and running
   service:

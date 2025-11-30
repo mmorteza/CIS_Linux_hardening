@@ -50,6 +50,7 @@
 - name: Set Inactive pasword lock to 45 days
   shell:
     cmd: useradd -D -f 45
+  run_once: true
 
 - name: Add AIDE cron Job 
   cron:
@@ -142,15 +143,25 @@
   when:
     - ansible_facts.os_family == "Debian"
 
+- name: Create /etc/systemd/coredump.conf.d if not exists.
+  file:
+    path: /etc/systemd/coredump.conf.d
+    state: directory
+    owner: root
+    group: root
+  run_once: true
+  when:
+    - ansible_facts.os_family == "RedHat"
+
 - name: Adjusting coredump configurations
   template:
     src: coredumps.conf.j2
-    dest: /etc/systemd/coredump.conf
+    dest: /etc/systemd/coredump.conf.d/60-coredump.conf
     mode: '0644'
     group: root
     owner: root
   when:
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
 
 - name: limiting cron access on /etc/cron.allow
   template:

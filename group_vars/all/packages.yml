@@ -31,4 +31,38 @@ removed_packages:
   - ftp
   - tnftp
   - ufw
+  - setroubleshoot
+  - mcstrans
 
+rhel_removed_packages:
+  - setroubleshoot
+  - mcstrans
+  - firewalld
+  - httpd
+  - apache2
+  - xorg-x11-server-common
+  - ntp
+  - net-snmp
+  - samba
+  - squid
+  - telnet
+  - vsftpd
+  - bind
+  - nis
+  - gdm
+  - inetutils-telnet
+  - ftp
+  - tnftp
+
+rhel_packages:
+  - authselect
+  - chrony
+  - rsyslog
+  - pam
+  - libselinux
+  - oddjob-mkhomedir
+  - audispd-plugins
+  - acl
+  - aide
+  - nftables
+  - audit

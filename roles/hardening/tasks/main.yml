@@ -17,3 +17,4 @@
     - grub.yml
     - pam.yml
     - sysctl.yml
+    - rhel_pam.yml

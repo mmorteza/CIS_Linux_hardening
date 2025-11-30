@@ -6,6 +6,7 @@
     owner: root
     group: root
   register: faillock_file
+  when: ansible_facts.os_family == "Debian"
   tags:
     - CIS_Benchmark
 
@@ -22,13 +23,17 @@
     owner: root
     group: root
   register: faillock_notify
+  when: ansible_facts.os_family == "Debian"
   tags:
     - CIS_Benchmark
 
 - name: Run pam-auth-update command to update faillock notify
   shell:
     cmd: pam-auth-update --enable faillock_notify
-  when: faillock_notify is changed
+  when:
+    - faillock_notify is changed
+    - ansible_facts.os_family == "Debian"
+
 
 - name: Enable pwquality.so module for Password quality checking
   copy:
@@ -38,13 +43,16 @@
     owner: root
     group: root
   register: pwquality_file
+  when: ansible_facts.os_family == "Debian"
   tags:
     - CIS_Benchmark
 
 - name: Run pam-auth-update command to update faillock notify
   shell:
     cmd: pam-auth-update --enable pwquality
-  when: pwquality_file is changed
+  when:
+    - ansible_facts.os_family == "Debian"
+    - pwquality_file is changed
 
 - name: Enable pwhistory.so module for Password history checking
   copy:
@@ -54,13 +62,16 @@
     owner: root
     group: root
   register: pwhistory_file
+  when: ansible_facts.os_family == "Debian"
   tags:
     - CIS_Benchmark
 
 - name: Run pam-auth-update command to update pwhistory notify
   shell:
     cmd: pam-auth-update pwhistory
-  when: pwhistory_file is changed
+  when:
+    - pwhistory_file is changed
+    - ansible_facts.os_family == "Debian"
 
 - name: Apply PAM password quality configuration
   ansible.builtin.template:
@@ -70,7 +81,9 @@
     group: root
     mode: '0644'
     backup: true
-  when: '"libpam-runtime" in ansible_facts.packages'
+  when:
+    - '"libpam-runtime" in ansible_facts.packages'
+    - ansible_facts.os_family == "Debian"
 
 - name: Configure faillock.conf on /etc/security/
   template:
@@ -80,7 +93,9 @@
     group: root
     owner: root
     backup: true
-  when: '"libpam-runtime" in ansible_facts.packages'
+  when:
+    - '"libpam-runtime" in ansible_facts.packages'
+    - ansible_facts.os_family == "Debian"
 
 - name: securing /etc/login.defs to protect users
   template:

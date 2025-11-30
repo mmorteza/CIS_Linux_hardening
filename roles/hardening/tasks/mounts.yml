@@ -23,6 +23,7 @@
     regexp: '^(\S+\s+/tmp\s+\S+\s+)(\S*)'
     replace: '\1\2,nodev,nosuid,noexec'
   when: tmp_option_check.rc == 1
+  run_once: true
 
 - name: Remount /tmp partition with new options
   shell:

@@ -49,6 +49,10 @@ kernel_params:
     value: 0
   - name: "net.ipv4.conf.all.rp_filter"
     value: 1
+  - name: "kernel.randomize_va_space"
+    value: 2
+  - name: "kernel.yama.ptrace_scope"
+    value: 1
 
 rhel_ker_params:
   - name: "kernel.randomize_va_space"

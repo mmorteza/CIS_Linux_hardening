@@ -1,0 +1,54 @@
+- name: Get current active authselect profile
+  shell: authselect current
+  register: auth_current_profile
+  changed_when: false
+  when:
+    - ansible_facts.os_family == "RedHat"
+
+- name: Create a Custom SSSD profile based on CIS_Benchmark
+  shell: authselect create-profile CIS_BNCH -b sssd
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - "'CIS_BNCH' not in auth_current_profile"
+  ignore_errors: true
+  run_once: true
+
+- name: Select Custom authselect profile
+  shell: authselect select custom/CIS_BNCH with-pwhistory with-faillock without-nullok with-mkhomedir --backup=PAM_CONFIG_BAK --force
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - "'CIS_BNCH' not in auth_current_profile"
+
+- name: apply authselsect changes
+  ansible.builtin.shell: authselect apply-changes
+  when:
+    - ansible_facts.os_family == "RedHat"
+    - "'CIS_BNCH' not in auth_current_profile"
+  tags:
+    - "NIST SP 800-53 Rev. 5: CM-1, CM-2, CM-6, CM-7, IA-5"
+    - "pam_faillock(8)"
+    - "NIST SP 800-53 Rev. 5: IA-5(1)"
+    - "MITRE ATT&CK T1110T1110.001, T1110.002, T1110.003, T1178.001, T1178.002, T1178.003, T1178.004 "
+
+- name: Apply PAM password quality configuration on RHEL
+  ansible.builtin.template:
+    src: pwquality.conf.j2
+    dest: /etc/security/pwquality.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  when:
+    - ansible_facts.os_family == "RedHat"
+
+- name: Configure faillock.conf on /etc/security/
+  template:
+    src: faillock.conf.j2
+    dest: /etc/security/faillock.conf
+    mode: '0640'
+    group: root
+    owner: root
+    backup: true
+  when:
+    - '"libpam-runtime" in ansible_facts.packages'
+    - ansible_facts.os_family == "RedHat"

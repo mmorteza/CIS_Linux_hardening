@@ -15,6 +15,11 @@
     name: ssh
     state: restarted
 
+- name: Restart rhel-SSH
+  service:
+    name: sshd
+    state: restarted
+
 - name: Restart nft
   service:
     name: nftables
@@ -22,6 +27,9 @@
 
 - name: update-grub
   shell: sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+- name: rhel-update-grub2
+  shell: sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
 - name: Restart RSYSLOG
   service:

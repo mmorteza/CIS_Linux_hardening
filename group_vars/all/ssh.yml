@@ -27,5 +27,5 @@ max_auth: 4
 max_session: 6
 ClientAliveInterval: 300
 ClientAliveCountMax: 3
-allowed_group: [sugroup]
+allowed_group: [admin]
 root_login: "no"

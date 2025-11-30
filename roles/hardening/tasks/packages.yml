@@ -10,11 +10,11 @@
     - ansible_facts.os_family == "Debian"
 
 - name: Update cache on RHEL Base Dist
-  apt:
+  dnf:
     update_cache: true
   ignore_errors: true
   when: 
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
 
 - name: Install common packages if they are not installed on Debian base Dist
   apt:
@@ -30,17 +30,16 @@
   dnf:
     name: "{{ item }}"
     state: present
-#    update_cache: yes
-  loop: "{{ common_packages }}"
+    update_cache: yes
+  loop: "{{ rhel_packages }}"
   when:
     - "'{{ item }}' not in ansible_facts.packages"
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
 
 - name: Purge not used or uncommon packages Debian Dist
   apt:
     name: "{{ item }}"
     state: absent
-#    update_cache: yes
   loop: "{{ removed_packages }}"
   when: 
     - "'{{ item }}' in ansible_facts.packages"
@@ -60,10 +59,11 @@
     name: "{{ item }}"
     state: absent
 #    update_cache: yes
-  loop: "{{ removed_packages }}"
+  loop: "{{ rhel_removed_packages }}"
   when: 
     - "'{{ item }}' in ansible_facts.packages"
-    - ansible_facts.os_family == "rhel centos fedora"
+    - ansible_facts.os_family == "RedHat"
+  ignore_errors: true
   tags:
     - NIST-800-53-CM-6(a)
     - NIST-800-53-CM-7
