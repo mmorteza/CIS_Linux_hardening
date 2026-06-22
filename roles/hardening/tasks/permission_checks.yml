@@ -218,3 +218,42 @@
     group: root
   when:
     - ansible_facts.os_family == "RedHat"
+
+- name: Check /var/log/sysstat/ permission and set to 0640
+  file:
+    path: /var/log/sysstat/
+    mode: 640
+    owner: root
+    group: root
+    recurse: true
+
+- name: Check /var/log/landscape/ permission and set it to 0640
+  file:
+    path: /var/log/landscape/
+    mode: 0640
+    owner: root
+    group: root
+    recurse: true
+
+- name: Check /var/log/unattended-upgrades permission and set it to 0640
+  file:
+    path: /var/log/unattended-upgrades/
+    mode: 0640
+    owner: root
+    group: root
+    recurse: true
+
+- name: check /var/log/apport.log permission and set it to 0640
+  file:
+    path: /var/log/apport.log
+    mode: 0640
+    owner: root
+    group: root
+
+- name: check /var/log/alternatives.log.* permission and set it to 0640
+  file:
+    path: /var/log/alternatives.*
+    mode: 0640
+    owner: root
+    group: root
+  ignore_errors: true

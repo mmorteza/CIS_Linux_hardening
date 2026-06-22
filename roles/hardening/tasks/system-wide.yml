@@ -7,6 +7,14 @@
     owner: root
     group: root
 
+- name: update banner in /etc/issue.net
+  template:
+    src: banner.j2
+    dest: /etc/issue.net
+    mode: '0640'
+    owner: root
+    group: root
+
 - name: Disable update-motd
   shell: sudo chmod -x /etc/update-motd.d/*
   ignore_errors: true

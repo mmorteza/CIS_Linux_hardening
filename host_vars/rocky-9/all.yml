@@ -1,4 +1,4 @@
 passwords_users: [rocky]
-audit_backlog: 'audit_backlog_limit=8192'
+audit_backlog: 'quiet audit_backlog_limit=8192'
 cmdline1: 'selinux=1 enfored=1'
-cmdline2: 'quiet audit=1'
+cmdline2: 'audit=1'

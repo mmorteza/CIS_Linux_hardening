@@ -5,7 +5,7 @@
 - name: Include tasks for common configuration
   include_tasks: "{{ item }}"
   loop:
-    - packages.yml
+    # - packages.yml
     # - kernel
     - system-wide.yml
     - ntp.yml

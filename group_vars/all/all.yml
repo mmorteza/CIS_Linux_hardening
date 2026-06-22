@@ -1,44 +1,47 @@
 disabled_modules:
   - name: "cramfs"
-    disable: true
+    status: true
     blacklist: true
   - name: "freevxfs"
-    disable: true
+    status: true
     blacklist: true
   - name: "jffs2"
-    disable: true
+    status: true
     blacklist: true
   - name: "hfs"
-    disable: true
+    status: true
     blacklist: true
   - name: "hfsplus"
-    disable: true
+    status: true
     blacklist: true
   - name: "firewire_ohci"
     blacklist: true
   - name: "dccp"
-    disable: true
+    status: true
     blacklist: true
   - name: "squashfs"
-    disable: true
+    status: true
     blacklist: true
   - name: "tipc"
-    disable: true
+    status: true
     blacklist: true
   - name: "sctp"
-    disable: true
+    status: true
     blacklist: true
   - name: "rds"
-    disable: true
+    status: true
     blacklist: true
   - name: "udf"
-    disable: true
+    status: true
     blacklist: true
   - name: overlayfs
-    disable: true
+    status: true
     blacklist: true
   - name: usb-storage
-    disable: true
+    status: true
+    blacklist: true
+  - name: gfs2
+    status: false
     blacklist: true
 
 ntp_primary_server: "0.ubuntu.pool.ntp.org"
@@ -48,7 +51,7 @@ FallbackNTP: "ntp.ubuntu.org"
 # grub related vars
 grub_cmdline1: "audit=1 audit_backlog_limit=8192"
 grub_cmdline2: "apparmor=1 security=apparmor"
-grub_cmdline3: "ipv6.disable=1"
+grub_cmdline3: "ipv6.status=1"
 
 # password quality conf
 pam_password_deny: 5

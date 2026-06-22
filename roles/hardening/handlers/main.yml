@@ -26,7 +26,7 @@
     state: restarted
 
 - name: update-grub
-  shell: sudo grub-mkconfig -o /boot/grub/grub.cfg
+  shell: sudo /usr/sbin/grub-mkconfig -o /boot/grub/grub.cfg
 
 - name: rhel-update-grub2
   shell: sudo grub2-mkconfig -o /boot/grub2/grub.cfg
